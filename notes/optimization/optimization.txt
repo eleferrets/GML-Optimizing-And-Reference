@@ -1,0 +1,62 @@
+Always choose multiplying over division. "view_wview[0]*.5" is faster than "view_wview[0]/.5" 
+++i is mostly fastest, i+=1 is close or should be used
+*****Use ++i instead of i++******
+Have a look through of all your code
+Don't recalculate things in the step event (use temp or non temp vars)
+Or use alarms
+
+In a for loop, everything must be a local var to prevent more computation / less performance
+
+When you call the load_audiogroup function only what you need is pulled into memory and it will be low CPU. You CAN do this for music too but that's high memory if your song is long/high quality. You would typically use the last option for large music files.
+
+If your game is huge in memory you should be using Create Textures on Demand and loading / unloading texture pages in a similar fashion to audio. If your game is using high CPU, you should use the profiler to see what you can optimize / cut. If your game is using high GPU you should be working to reduce texture swaps / vertex batches etc.
+
+
+****Using @ in arrays prevents GM from creating clones of the arrays.**** (Working with pre-2022 projects)
+Don't have var ds_*!
+Things that cause memory leaks: 
+External files, Surfaces, Resources created with code (Like Sprite add), Destroy ds_grids, ds_lists and other ds_ data structures
+Free all surfaces. Do not to use "large" surfaces.
+Destroy Particle Systems and Particle Types and Emitters
+Buffers, vertex buffers, vertex formats, audio buffers, physics fixtures
+
+
+For shaders, setting the uniforms and then drawing is much more efficient
+
+
+For YYC, storing the vars (especially in loops) into local vars and then using them speeds things up
+Store arrays into local vars before using them
+Have things as local vars in with loops too, keep the local vars to the object outside of the with to the other
+When accessing an array multiple times, storing it in a local "var" is slower if you don't change many values (like 3) and faster if you change many values (like 30).
+Repeat in GMS2 is best
+
+Convert globals to local vars before use
+
+Blendmodes, drawing shapes, using the draw healthbar functions, using a shader and changing render targets break the batch
+
+If it is a sound effect (or any short sound bite of only a few seconds), then it should be uncompressed.
+If it is a sound effect but larger than a few seconds, or if it is only used very occasionally in the game, then it can be compressed.
+
+If it is a large sound effect and used frequently in the game it should be compressed (uncompressed on load).
+
+If it is long music it should be compressed (streamed from disk)
+
+Init array to 0: - non-HTML5 as it goes upward
+myarray[99] = 0;
+// or
+array_create(100, 0);
+
+
+// This is ~15% faster...
+var i = 0;
+repeat(total) {
+    someVar = 25;
+    i += 1;
+}
+// Than this...
+for (i = 0; i < total; i += 1) {
+    someVar = 25;
+}
+
+Boolean instead of if statements
+Variable = bool*2-1 - alternate between 1 and -1

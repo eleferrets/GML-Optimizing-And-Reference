@@ -1,0 +1,28 @@
+In the sinking platforms Create:
+
+touchingPlayer = false;
+
+fallingSpd = 3 // or whatever number
+
+In the sinking platforms Step:
+
+if (place_meeting(x, y - 5, obj_player)) {
+
+touchingPlayer = true;
+}
+
+else touchingPlayer = false;
+
+if (touchingPlayer) {
+
+ y += fallingSpd
+}
+
+else {
+
+ if (y > ystart) {
+
+      y -= fallingSpd;
+
+ }
+}
